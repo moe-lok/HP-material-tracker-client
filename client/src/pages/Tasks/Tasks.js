@@ -9,9 +9,15 @@ import { Input, FormBtn } from '../../components/Form';
 
 class Tasks extends Component {
 	state = {
-		tasks: [],
-		title: '',
-		author: ''
+		task_log: [],
+		empId: '',
+		barcode: '',
+		mc: '',
+		qtyIn: '',
+		qtyOut: '',
+		date: '',
+		timeIn: '',
+		timeOut: '',
 	};
 
 	componentDidMount() {
@@ -20,7 +26,8 @@ class Tasks extends Component {
 
 	loadTasks = () => {
 		API.getTasks()
-			.then(res => this.setState({ tasks: res.data, title: '', author: '' }))
+			.then(res => this.setState({ task_log: res.data, empId: '', barcode:'', mc:'', 
+			qtyIn: '', qtyOut:'', date:'', timeIn:'', timeOut:'' }))
 			.catch(err => console.log(err));
 	};
 
@@ -39,10 +46,16 @@ class Tasks extends Component {
 
 	handleFormSubmit = event => {
 		event.preventDefault();
-		if (this.state.title && this.state.author) {
+		if (this.state.empId && this.state.qtyIn) {
 			API.saveTask({
-				title: this.state.title,
-				author: this.state.author
+				empId: this.state.empId,
+				barcode: this.state.barcode,
+				mc: this.state.mc,
+				qtyIn: this.state.qtyIn,
+				qtyOut: this.state.qtyOut,
+				date: this.state.date,
+				timeIn: this.state.timeIn,
+				timeOut: this.state.timeOut
 			})
 				.then(res => this.loadTasks())
 				.catch(err => console.log(err));
@@ -55,24 +68,60 @@ class Tasks extends Component {
 				<Row>
 					<Col size="md-6">
 						<Jumbotron>
-							<h1>What Tasks Should I Read?</h1>
+							<h1>What Tasks Should I Complete?</h1>
 						</Jumbotron>
 						<form>
 							<Input
-								value={this.state.title}
+								value={this.state.empId}
 								onChange={this.handleInputChange}
-								name="title"
-								placeholder="Title (required)"
+								name="empId"
+								placeholder="Emp Id (required)"
 							/>
 							<Input
-								value={this.state.author}
+								value={this.state.barcode}
 								onChange={this.handleInputChange}
-								name="author"
-								placeholder="Author (required)"
+								name="barcode"
+								placeholder="barcode (required)"
+							/>
+							<Input
+								value={this.state.mc}
+								onChange={this.handleInputChange}
+								name="mc"
+								placeholder="M/C # (required)"
+							/>
+							<Input
+								value={this.state.qtyIn}
+								onChange={this.handleInputChange}
+								name="qtyIn"
+								placeholder="Qty In (required)"
+							/>
+							<Input
+								value={this.state.qtyOut}
+								onChange={this.handleInputChange}
+								name="qtyOut"
+								placeholder="Qty Out (required)"
+							/>
+							<Input
+								value={this.state.date}
+								onChange={this.handleInputChange}
+								name="date"
+								placeholder="Date (required)"
+							/>
+							<Input
+								value={this.state.timeIn}
+								onChange={this.handleInputChange}
+								name="timeIn"
+								placeholder="Time In (required)"
+							/>
+							<Input
+								value={this.state.timeOut}
+								onChange={this.handleInputChange}
+								name="timeOut"
+								placeholder="Time Out (required)"
 							/>
 
 							<FormBtn
-								disabled={!(this.state.author && this.state.title)}
+								disabled={!(this.state.qtyIn && this.state.empId)}
 								onClick={this.handleFormSubmit}
 							>
 								Submit Task
@@ -83,13 +132,13 @@ class Tasks extends Component {
 						<Jumbotron>
 							<h1>Tasks On My List</h1>
 						</Jumbotron>
-						{this.state.tasks.length ? (
+						{this.state.task_log.length ? (
 							<List>
-								{this.state.tasks.map(task => (
+								{this.state.task_log.map(task => (
 									<ListItem key={task._id}>
-										<Link to={'/tasks/' + task._id}>
+										<Link to={'/task_log/' + task._id}>
 											<strong>
-												{task.title} by {task.author}
+												{task.empId} by {task.qtyIn}
 											</strong>
 										</Link>
 										<DeleteBtn onClick={() => this.deleteTask(task._id)} />

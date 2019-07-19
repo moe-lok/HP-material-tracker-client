@@ -11,8 +11,8 @@ const App = () => (
 			<Nav />
 			<Switch>
 				<Route exact path="/" component={Tasks} />
-				<Route exact path="/tasks" component={Tasks} />
-				<Route exact path="/tasks/:id" component={Detail} />
+				<Route exact path="/task_log" component={Tasks} />
+				<Route exact path="/task_log/:id" component={Detail} />
 				<Route component={NoMatch} />
 			</Switch>
 		</div>
